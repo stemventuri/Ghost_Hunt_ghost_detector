@@ -8,11 +8,12 @@ function torch_fade () {
 radio.onReceivedNumber(function (receivedNumber) {
     if (receivedNumber == 0) {
         ghost_detected = 1
-        basic.showString("" + (radio.receivedPacket(RadioPacketProperty.SerialNumber)))
+        ghost_detected_id = radio.receivedPacket(RadioPacketProperty.SerialNumber)
+        basic.showString("" + (ghost_detected_id))
     }
 })
 function main_game () {
-    game.addScore(1)
+	
 }
 function torch_flash () {
     light_level = [10, 0]
@@ -62,7 +63,7 @@ function torch_lowbeam () {
     pins.analogWritePin(AnalogPin.P2, 200)
 }
 function setup_new_game () {
-    game.setScore(0)
+    ghost_detected_list = []
 }
 function torch_fullbeam () {
     pins.analogWritePin(AnalogPin.P2, 1023)
@@ -71,6 +72,8 @@ function setup_sound () {
     music.setTempo(120)
     music.setVolume(60)
 }
+let ghost_detected_list: number[] = []
+let ghost_detected_id = 0
 let ghost_detected = 0
 let light_level: number[] = []
 setup_radio()
@@ -81,5 +84,6 @@ basic.forever(function () {
     main_radio()
     main_sound()
     main_torch()
+    main_game()
     ghost_detected = 0
 })
