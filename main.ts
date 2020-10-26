@@ -1,26 +1,11 @@
-function torch_fade () {
-    light_level = [8, 6, 8, 2, 4]
-    for (let level of light_level) {
-        pins.analogWritePin(AnalogPin.P2, level * 100)
-        basic.pause(1000)
-    }
-}
 radio.onReceivedNumber(function (receivedNumber) {
     if (receivedNumber == 0) {
         ghost_detected = 1
         ghost_detected_id = radio.receivedPacket(RadioPacketProperty.SerialNumber)
-        basic.showString("" + (ghost_detected_id))
     }
 })
 function main_game () {
 	
-}
-function torch_flash () {
-    light_level = [10, 0]
-    for (let level2 of light_level) {
-        pins.analogWritePin(AnalogPin.P2, level2 * 100)
-        basic.pause(100)
-    }
 }
 function main_sound () {
     if (ghost_detected) {
@@ -35,15 +20,7 @@ function setup_radio () {
     radio.setTransmitPower(1)
 }
 function main_torch () {
-    if (ghost_detected) {
-        torch_lowbeam()
-        if (Math.randomBoolean()) {
-            torch_flash()
-        } else {
-            torch_fade()
-        }
-    }
-    torch_fade()
+    torch_lowbeam()
 }
 function main_radio () {
     radio.sendNumber(1)
@@ -52,7 +29,6 @@ function main_radio () {
 function setup_torch () {
     ghost_detected = 0
     for (let index = 0; index < 3; index++) {
-        torch_flash()
         basic.pause(1000)
     }
 }
@@ -75,15 +51,14 @@ function setup_sound () {
 let ghost_detected_list: number[] = []
 let ghost_detected_id = 0
 let ghost_detected = 0
-let light_level: number[] = []
 setup_radio()
 setup_torch()
 setup_sound()
 setup_new_game()
 basic.forever(function () {
+    main_torch()
     main_radio()
     main_sound()
-    main_torch()
     main_game()
     ghost_detected = 0
 })
