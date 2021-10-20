@@ -39,6 +39,7 @@ function setup_sound () {
     music.setVolume(60)
 }
 let ghost_detected = 0
+basic.showString("T")
 setup_radio()
 setup_torch()
 setup_sound()
